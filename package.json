@@ -1,0 +1,28 @@
+{
+  "name": "authie-third-party",
+  "version": "1.0.0",
+  "description": "third party auth for authie",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irtazabbas/authie-third-party.git"
+  },
+  "author": "Irtaza Abbas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irtazabbas/authie-third-party/issues"
+  },
+  "homepage": "https://github.com/irtazabbas/authie-third-party#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "deferrari": "^1.0.3",
+    "lodash": "^4.17.4",
+    "pg": "^6.2.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.30.4",
+    "winston": "^2.3.1"
+  }
+}
