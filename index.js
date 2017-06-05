@@ -29,6 +29,10 @@ class AuthieThirdParty {
       p(this).google = require('./parties/google')(config.google);
     }
 
+    if (config.facebook) {
+      // TODO init facebook auth.
+    }
+
     p(this).deferrari = new Deferrari();
 
     this.connect(p(this).config);
@@ -51,11 +55,6 @@ class AuthieThirdParty {
         CONNECTED, bootstrapModels(p(this).sequelize)
       );
     });
-  }
-
-  verifyFromGoogle() {
-    // TODO implement.
-    return Promise.resolve();
   }
 }
 
