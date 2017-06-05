@@ -10,8 +10,8 @@ const CONNECTED = 'connected';
 
 // This establishes a private namespace.
 const namespace = new WeakMap();
-function p(object) {
-  if (!namespace.has(object)) namespace.set(object, {});
+function p(object, dontSet) {
+  if (!namespace.has(object) && !dontSet) namespace.set(object, {});
   return namespace.get(object);
 }
 
@@ -21,9 +21,22 @@ class AuthieThirdParty {
     p(this).config = config || {};
     p(this).config.dbConfig = config.dbConfig || {};
 
+    if (config.fb && config.google) {
+      throw new Error('configuration for any one of google or facebook required');
+    }
+
+    if (config.google) {
+      p(this).google = require('./parties/google')(config.google);
+    }
+
     p(this).deferrari = new Deferrari();
 
     this.connect(p(this).config);
+  }
+
+  get google() {
+    if (!p(this, true).google) throw new Error('google auth was not set up.');
+    return p(this, true).google;
   }
 
   connect(config) {
@@ -46,4 +59,4 @@ class AuthieThirdParty {
   }
 }
 
-module.exports = (config) => new AuthieThirdParty(config);
+module.exports = config => new AuthieThirdParty(config);
