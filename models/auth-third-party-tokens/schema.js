@@ -9,7 +9,7 @@ const DEFINITION_OBJECT = {
   id: {type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4},
   provider: {type: Sequelize.STRING, allowNull: false},
   token: {type: Sequelize.TEXT, allowNull: false},
-  providerData: {type: Sequelize.JSONB}
+  userData: {type: Sequelize.JSONB}
 };
 
 const CONFIGURATION_OBJECT = {
