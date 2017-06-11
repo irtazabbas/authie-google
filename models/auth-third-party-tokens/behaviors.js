@@ -14,7 +14,7 @@ module.exports = (models) => {
     return this.create({
       provider,
       token,
-      // userData
+      userData
     })
     .then(result => {
       return result;
