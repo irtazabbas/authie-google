@@ -8,8 +8,6 @@ module.exports = (models) => {
     scopes: {}
   };
 
-  // TODO implement.
-
   behaviors.classMethods.saveToken = function(token, provider, userData) {
     return this.create({
       provider,

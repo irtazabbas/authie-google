@@ -28,12 +28,8 @@ class GoogleAuthie {
           delete result.access_token;
 
           models.AuthToken.saveToken(token, PROVIDER, result)
-          .then(authToken => {
-            resolve(tokens);
-          })
-          .catch(err => {
-            reject(err);
-          });
+          .then(authToken => resolve(authToken))
+          .catch(err => reject(err));
         });
       });
     });
