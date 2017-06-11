@@ -1,7 +1,9 @@
 'use strict';
 
-const GARAGE = require('./garage-de-ferraris');
+const Deferrari = require('deferrari');
+
 const bootstrapModels = require('./models');
+const CONSTANTS = require('./constants');
 const p = require('./privatory')();
 
 
@@ -11,6 +13,8 @@ class AuthieThirdParty {
     if (!config.sequelize) throw new Error('sequelize client was not provided');
     p(this).config = config;
 
+    p(this).deferrari = new Deferrari();
+
     this.models = bootstrapModels(p(this).config.sequelize);
 
     if (config.fb && config.google) {
@@ -18,7 +22,9 @@ class AuthieThirdParty {
     }
 
     if (config.google) {
-      p(this).google = require('./parties/google')(config.google);
+      p(this).google = require('./parties/google')(
+        config.google, p(this).deferrari
+      );
     }
 
     if (config.facebook) {
@@ -30,8 +36,8 @@ class AuthieThirdParty {
 
   sync() {
     p(this).config.sequelize.sync()
-    .then(() => GARAGE.DB_SYNC.DEF.resolve(
-      GARAGE.DB_SYNC.KEY, this.models
+    .then(() => p(this).deferrari.resolve(
+      CONSTANTS.SEQUELIZE_SYNC, this.models
     ))
     .catch(err => {
       throw new Error(err);
