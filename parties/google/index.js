@@ -3,22 +3,22 @@
 const GoogleAuth = require('googleapis').auth.OAuth2;
 
 const CONSTANTS = require('./constants');
-const GARAGE = require('../../garage-de-ferraris');
 const p = require('../../privatory')();
 
 const PROVIDER = 'google';
 
 class GoogleAuthie {
-  constructor(config) {
+  constructor(config, deferrari) {
     if (!config) throw new Error('Config for google auth missing.');
     if (!config.clientId) throw new Error('Client id missing for google auth.');
     if (!config.secret) throw new Error('Client secret is missing for google auth.');
 
+    p(this).deferrari = deferrari;
     p(this).auth = new GoogleAuth(config.clientId, config.secret, config.returnUrl);
   }
 
   getToken(code) {
-    return GARAGE.DB_SYNC.DEF.deferUntil(GARAGE.DB_SYNC.KEY)
+    return p(this).deferrari.deferUntil(CONSTANTS.ROOT.SEQUELIZE_SYNC)
     .then(models => {
       return new Promise((resolve, reject) => {
         p(this).auth.getToken(code, 
