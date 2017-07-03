@@ -21,16 +21,18 @@ class GoogleAuthie {
     return p(this).deferrari.deferUntil(CONSTANTS.ROOT.SEQUELIZE_SYNC)
     .then(models => {
       return new Promise((resolve, reject) => {
-        p(this).auth.getToken(code, 
-        (err, result) => {
-          if (err) return reject(err);
-          let token = result.access_token;
-          delete result.access_token;
+        p(this).auth.getToken(
+          code, 
+          (err, result) => {
+            if (err) return reject(err);
+            let token = result.access_token;
+            delete result.access_token;
 
-          models.AuthToken.saveToken(token, PROVIDER, result)
-          .then(authToken => resolve(authToken))
-          .catch(err => reject(err));
-        });
+            models.AuthToken.saveToken(token, PROVIDER, result)
+            .then(authToken => resolve(authToken))
+            .catch(err => reject(err));
+          }
+        );
       });
     });
   }

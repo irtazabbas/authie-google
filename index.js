@@ -36,6 +36,7 @@ class AuthieThirdParty {
 
   sync() {
     p(this).config.sequelize.sync()
+    .then(() => console.log('Authie third party synced'))
     .then(() => p(this).deferrari.resolve(
       CONSTANTS.SEQUELIZE_SYNC, this.models
     ))
