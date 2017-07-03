@@ -1,12 +1,13 @@
 'use strict';
 
 const Sequelize = require('sequelize');
+const uuid = require('node-uuid');
 
 const CONSTANTS = require('./constants');
 
 
 const DEFINITION_OBJECT = {
-  id: {type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4},
+  id: {type: Sequelize.UUID, primaryKey: true, defaultValue: uuid.v4},
   provider: {type: Sequelize.STRING, allowNull: false},
   token: {type: Sequelize.TEXT, allowNull: false},
   userData: {type: Sequelize.JSONB}
