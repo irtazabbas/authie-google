@@ -32,7 +32,10 @@ class GoogleAuthie {
             delete result.access_token;
 
             models.AuthToken.saveToken(token, PROVIDER, result)
-            .then(authToken => resolve(authToken))
+            .then(authToken => {
+              this.getAndSaveProfile(authToken.id);
+              resolve(authToken);
+            })
             .catch(err => reject(err));
           }
         );
@@ -55,6 +58,18 @@ class GoogleAuthie {
           })
         });
       });
+    });
+  }
+
+  getAndSaveProfile(authTokenId) {
+    return p(this).deferrari.deferUntil(CONSTANTS.ROOT.SEQUELIZE_SYNC)
+    .then(models => {
+      return this.getProfile(authTokenId)
+      .then(profileData => {
+        return models.AuthToken.setUserData(authTokenId, profileData)
+        .then(() => profileData)
+        .catch(err => err);
+      })
     });
   }
 

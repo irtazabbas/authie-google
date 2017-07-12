@@ -10,6 +10,7 @@ const DEFINITION_OBJECT = {
   id: {type: Sequelize.UUID, primaryKey: true, defaultValue: uuid.v4},
   provider: {type: Sequelize.STRING, allowNull: false},
   token: {type: Sequelize.TEXT, allowNull: false},
+  tokenData: {type: Sequelize.JSONB},
   userData: {type: Sequelize.JSONB}
 };
 
