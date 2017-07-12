@@ -1,6 +1,6 @@
 {
   "name": "authie-third-party",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "third party auth for authie",
   "main": "index.js",
   "scripts": {
