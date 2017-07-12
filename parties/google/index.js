@@ -1,7 +1,8 @@
 'use strict';
 
-const GoogleAuth = require('googleapis').auth.OAuth2;
+const google = require('googleapis');
 
+const authClient = require('./auth-client');
 const CONSTANTS = require('./constants');
 const p = require('../../privatory')();
 
@@ -13,8 +14,10 @@ class GoogleAuthie {
     if (!config.clientId) throw new Error('Client id missing for google auth.');
     if (!config.secret) throw new Error('Client secret is missing for google auth.');
 
+    p(this).api = google;
+    p(this).config = config;
     p(this).deferrari = deferrari;
-    p(this).auth = new GoogleAuth(config.clientId, config.secret, config.returnUrl);
+    p(this).auth = authClient(config);
   }
 
   getToken(code) {
@@ -33,6 +36,24 @@ class GoogleAuthie {
             .catch(err => reject(err));
           }
         );
+      });
+    });
+  }
+
+  getProfile(authTokenId) {
+    return p(this).deferrari.deferUntil(CONSTANTS.ROOT.SEQUELIZE_SYNC)
+    .then(models => {
+      return models.AuthToken.getById(authTokenId)
+      .then(authToken => {
+        return new Promise((resolve, reject) => {
+          p(this).api.plus('v1').people.get({
+            userId: 'me',
+            auth: authClient(p(this).config, authToken.token)
+          }, (err, response) => {
+            if (err) reject(err);
+            else resolve(response);
+          })
+        });
       });
     });
   }

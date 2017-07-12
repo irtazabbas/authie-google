@@ -23,6 +23,7 @@
     "node-uuid": "^1.4.8",
     "pg": "^6.2.3",
     "pg-hstore": "^2.3.2",
+    "punch-error": "^1.0.7",
     "sequelize": "^3.30.4",
     "winston": "^2.3.1"
   }
