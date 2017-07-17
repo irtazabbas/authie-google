@@ -46,7 +46,7 @@ class AuthieThirdParty {
     });
   }
 
-  login(provider, code) {
+  login(code, provider) {
     if (CONSTANTS.PROVIDERS.indexOf(provider) === -1) {
       return Promise.reject(
         `Login for provider '${provider}' isn't supported. Please check the spelling.`

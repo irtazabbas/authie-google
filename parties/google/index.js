@@ -5,6 +5,7 @@ const google = require('googleapis');
 const authClient = require('./auth-client');
 const CONSTANTS = require('./constants');
 const p = require('../../privatory')();
+const _ = require('lodash');
 
 const PROVIDER = 'google';
 
@@ -33,8 +34,17 @@ class GoogleAuthie {
 
             models.ThirdPartyToken.saveToken(token, PROVIDER, result)
             .then(authToken => {
-              this.getAndSaveProfile(authToken.id);
-              resolve(authToken);
+              this.getAndSaveProfile(authToken.id)
+              .then(profile => {
+                let email = '';
+                let emails = profile.emailAddresses;
+                if (emails && emails.length) {
+                  email = _.get(emails.find(e => e.metadata.primary), 'value')
+                    || email;
+                }
+                  profile.emailAddresses.find(el => el.metadata.primary);
+                resolve({authToken, email});
+              });
             })
             .catch(err => reject(err));
           }
@@ -49,8 +59,9 @@ class GoogleAuthie {
       return models.ThirdPartyToken.getById(authTokenId)
       .then(authToken => {
         return new Promise((resolve, reject) => {
-          p(this).api.plus('v1').people.get({
-            userId: 'me',
+          p(this).api.people('v1').people.get({
+            resourceName: 'people/me',
+            personFields: 'emailAddresses,names',
             auth: authClient(p(this).config, authToken.token)
           }, (err, response) => {
             if (err) reject(err);
@@ -74,7 +85,8 @@ class GoogleAuthie {
   }
 
   getAuthUrl(scopes) {
-    scopes = scopes && scopes.length ? scopes : [CONSTANTS.SCOPES.PLUS];
+    scopes = scopes && scopes.length ?
+      scopes : Object.keys(CONSTANTS.SCOPES).map(key => CONSTANTS.SCOPES[key]);
     return new Promise((resolve, reject) => {
       resolve(p(this).auth.generateAuthUrl({
         scope: scopes,
