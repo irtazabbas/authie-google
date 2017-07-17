@@ -31,7 +31,7 @@ class GoogleAuthie {
             let token = result.access_token;
             delete result.access_token;
 
-            models.AuthToken.saveToken(token, PROVIDER, result)
+            models.ThirdPartyToken.saveToken(token, PROVIDER, result)
             .then(authToken => {
               this.getAndSaveProfile(authToken.id);
               resolve(authToken);
@@ -46,7 +46,7 @@ class GoogleAuthie {
   getProfile(authTokenId) {
     return p(this).deferrari.deferUntil(CONSTANTS.ROOT.SEQUELIZE_SYNC)
     .then(models => {
-      return models.AuthToken.getById(authTokenId)
+      return models.ThirdPartyToken.getById(authTokenId)
       .then(authToken => {
         return new Promise((resolve, reject) => {
           p(this).api.plus('v1').people.get({
@@ -66,7 +66,7 @@ class GoogleAuthie {
     .then(models => {
       return this.getProfile(authTokenId)
       .then(profileData => {
-        return models.AuthToken.setUserData(authTokenId, profileData)
+        return models.ThirdPartyToken.setUserData(authTokenId, profileData)
         .then(() => profileData)
         .catch(err => err);
       })

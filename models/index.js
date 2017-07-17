@@ -3,7 +3,7 @@
 module.exports = (sequelize) => {
   const models = {};
   Object.assign(models, {
-    AuthToken: initModel('auth-third-party-tokens', models)
+    ThirdPartyToken: initModel('auth-third-party-tokens', models)
   });
 
   function initModel(modelName) {

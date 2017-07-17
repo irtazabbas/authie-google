@@ -29,6 +29,7 @@ class AuthieThirdParty {
 
     if (config.facebook) {
       // TODO init facebook auth.
+      p(this).facebook = {};
     }
 
     this.sync();
@@ -45,9 +46,24 @@ class AuthieThirdParty {
     });
   }
 
+  login(provider, code) {
+    if (CONSTANTS.PROVIDERS.indexOf(provider) === -1) {
+      return Promise.reject(
+        `Login for provider '${provider}' isn't supported. Please check the spelling.`
+      );
+    }
+
+    return this[provider].getToken(code);
+  }
+
   get google() {
     if (!p(this, true).google) throw new Error('google auth was not set up.');
     return p(this, true).google;
+  }
+
+  get facebook() {
+    if (!p(this, true).facebook) throw new Error('facebook auth was not set up.');
+    return p(this, true).facebook;
   }
 }
 
