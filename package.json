@@ -19,6 +19,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "deferrari": "^1.0.3",
+    "googleapis": "^20.1.0",
     "lodash": "^4.17.4",
     "node-uuid": "^1.4.8",
     "pg": "^6.2.3",
